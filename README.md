@@ -28,6 +28,9 @@ app into a browser, this global variable approach is pretty hackish.
 * `app.Todo = Backbone.Model.extend(obj);` - Again, another globally exposed
 variable.
 
+* `app.TodoList = Backbone.Collection.extend({model: app.Todo})` - A global
+relying on another global.
+
 
 Critical... Stuff
 -----------------
