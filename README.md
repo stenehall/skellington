@@ -35,6 +35,9 @@ relying on another global.
 `index.html` that we attach to, we will instead work with a nice hierarchy of
 Backbone Views that renders everything dynamically; *everything*.
 
+* **Microtemplates** - we won't be using
+[underscore.js microtemplates][templates] or *any* templates for that matter.
+All HTML will be generated in our views.
 
 Critical... Stuff
 -----------------
@@ -76,3 +79,4 @@ npm start
 [browserify]: https://github.com/substack/node-browserify
 [browserify-shim]: https://github.com/thlorenz/browserify-shim
 [bundle]: https://github.com/smotchkkiss/skellington/blob/master/build/bundle.js
+[templates]: http://underscorejs.org/#template
