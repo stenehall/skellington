@@ -22,7 +22,7 @@ var TodosCollection = module.exports = Backbone.Collection.extend({
 
 });
 
-},{"backbone":"ZNpOQC","backbone.localstorage":8}],3:[function(require,module,exports){
+},{"backbone":"ZNpOQC","backbone.localstorage":9}],3:[function(require,module,exports){
 var Backbone = require("backbone");
 
 var Todo = module.exports = Backbone.Model.extend({
@@ -150,7 +150,8 @@ var HeaderView = module.exports = Backbone.View.extend({
 },{"backbone":"ZNpOQC"}],7:[function(require,module,exports){
 var Backbone = require("backbone");
 
-var HeaderView = require("./header");
+var HeaderView          = require("./header"),
+    TodoCollectionView  = require("../todo/todo-collection-view");
 
 var MainView = module.exports = Backbone.View.extend({
 
@@ -159,16 +160,36 @@ var MainView = module.exports = Backbone.View.extend({
 
   initialize: function() {
     this.headerView = new HeaderView;
+    this.todosView  = new TodoCollectionView;
   },
 
   render: function() {
     this.$el.append(this.headerView.render().el);
+    this.$el.append(this.listWrapper());
     return this;
+  },
+
+  listWrapper: function() {
+    var section = document.createElement("section");
+    section.id = "main";
+    section.appendChild(this.todosView.render().el);
+
+    return section;
   },
 
 });
 
-},{"./header":6,"backbone":"ZNpOQC"}],8:[function(require,module,exports){
+},{"../todo/todo-collection-view":8,"./header":6,"backbone":"ZNpOQC"}],8:[function(require,module,exports){
+var Backbone = require("backbone");
+
+var TodoCollectionView = module.exports = Backbone.View.extend({
+
+  tagName: "ul",
+  id: "todo-list",
+
+});
+
+},{"backbone":"ZNpOQC"}],9:[function(require,module,exports){
 /**
  * Backbone localStorage Adapter
  * Version 1.1.7
@@ -392,7 +413,7 @@ Backbone.sync = function(method, model, options) {
 return Backbone.LocalStorage;
 }));
 
-},{"backbone":"ZNpOQC","underscore":9}],9:[function(require,module,exports){
+},{"backbone":"ZNpOQC","underscore":10}],10:[function(require,module,exports){
 //     Underscore.js 1.4.4
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud Inc.
@@ -3212,7 +3233,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
 }).call(global, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
-},{"jquery":"Nn3oJm","underscore":12}],12:[function(require,module,exports){
+},{"jquery":"Nn3oJm","underscore":13}],13:[function(require,module,exports){
 //     Underscore.js 1.5.2
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
