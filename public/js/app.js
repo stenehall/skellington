@@ -22,7 +22,7 @@ var TodosCollection = module.exports = Backbone.Collection.extend({
 
 });
 
-},{"backbone":"ZNpOQC","backbone.localstorage":7}],3:[function(require,module,exports){
+},{"backbone":"ZNpOQC","backbone.localstorage":8}],3:[function(require,module,exports){
 var Backbone = require("backbone");
 
 var Todo = module.exports = Backbone.Model.extend({
@@ -41,6 +41,7 @@ var Todo = module.exports = Backbone.Model.extend({
 var Backbone = require("backbone");
 
 var MainView   = require("./layout/main");
+var FooterView = require("./layout/footer");
 
 var AppView = module.exports = Backbone.View.extend({
 
@@ -49,16 +50,78 @@ var AppView = module.exports = Backbone.View.extend({
 
   initialize: function() {
     this.mainView = new MainView;
+    this.footerView = new FooterView;
   },
 
   render: function() {
     this.$el.append(this.mainView.render().el);
+    this.$el.append(this.footerView.render().el);
     return this;
   },
 
 });
 
-},{"./layout/main":6,"backbone":"ZNpOQC"}],5:[function(require,module,exports){
+},{"./layout/footer":5,"./layout/main":7,"backbone":"ZNpOQC"}],5:[function(require,module,exports){
+var Backbone = require("backbone");
+
+var FooterView = module.exports = Backbone.View.extend({
+
+  tagName: "footer",
+  id: "info",
+
+  render: function() {
+    this.$el.append(this.info());
+    this.$el.append(this.originalAuthor());
+    this.$el.append(this.author());
+    this.$el.append(this.project());
+    return this;
+  },
+
+  info: function() {
+    var p = document.createElement("p");
+    p.appendChild(document.createTextNode("Double-click to edit a todo"));
+    return p;
+  },
+
+  originalAuthor: function() {
+    var a = document.createElement("a");
+    a.href = "https://github.com/addyosmani";
+    a.appendChild(document.createTextNode("Addy Osmani"));
+
+    var p = document.createElement("p");
+    p.appendChild(document.createTextNode("Originally written by "));
+    p.appendChild(a);
+
+    return p;
+  },
+
+  author: function() {
+    var a = document.createElement("a");
+    a.href = "https://github.com/smotchkkiss";
+    a.appendChild(document.createTextNode("smotchkkiss"));
+
+    var p = document.createElement("p");
+    p.appendChild(document.createTextNode("Modified by "));
+    p.appendChild(a);
+
+    return p;
+  },
+
+  project: function() {
+    var a = document.createElement("a");
+    a.href = "http://todomvc.com";
+    a.appendChild(document.createTextNode("TodoMVC"));
+
+    var p = document.createElement("p");
+    p.appendChild(document.createTextNode("Part of "));
+    p.appendChild(a);
+
+    return p;
+  },
+
+});
+
+},{"backbone":"ZNpOQC"}],6:[function(require,module,exports){
 var Backbone = require("backbone");
 
 var HeaderView = module.exports = Backbone.View.extend({
@@ -84,7 +147,7 @@ var HeaderView = module.exports = Backbone.View.extend({
 
 });
 
-},{"backbone":"ZNpOQC"}],6:[function(require,module,exports){
+},{"backbone":"ZNpOQC"}],7:[function(require,module,exports){
 var Backbone = require("backbone");
 
 var HeaderView = require("./header");
@@ -105,7 +168,7 @@ var MainView = module.exports = Backbone.View.extend({
 
 });
 
-},{"./header":5,"backbone":"ZNpOQC"}],7:[function(require,module,exports){
+},{"./header":6,"backbone":"ZNpOQC"}],8:[function(require,module,exports){
 /**
  * Backbone localStorage Adapter
  * Version 1.1.7
@@ -329,7 +392,7 @@ Backbone.sync = function(method, model, options) {
 return Backbone.LocalStorage;
 }));
 
-},{"backbone":"ZNpOQC","underscore":8}],8:[function(require,module,exports){
+},{"backbone":"ZNpOQC","underscore":9}],9:[function(require,module,exports){
 //     Underscore.js 1.4.4
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud Inc.
@@ -1557,6 +1620,8 @@ return Backbone.LocalStorage;
 
 }).call(this);
 
+},{}],"backbone":[function(require,module,exports){
+module.exports=require('ZNpOQC');
 },{}],"ZNpOQC":[function(require,module,exports){
 var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};(function browserifyShim(module, exports, define, browserify_shim__define__module__export__) {
 
@@ -3147,9 +3212,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
 }).call(global, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
-},{"jquery":"Nn3oJm","underscore":11}],"backbone":[function(require,module,exports){
-module.exports=require('ZNpOQC');
-},{}],11:[function(require,module,exports){
+},{"jquery":"Nn3oJm","underscore":12}],12:[function(require,module,exports){
 //     Underscore.js 1.5.2
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
