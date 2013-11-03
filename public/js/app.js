@@ -6,7 +6,7 @@ var Todo            = require("./models/todo"),
 // create/append view
 (function() {
   var todos = new TodosCollection([], {model: Todo});
-  var view  = new AppView(todos);
+  var view  = new AppView({todosCollection: todos});
   document.body.appendChild(view.render().el);
 
   // this is only temporarily attached to window for debug purposes
@@ -49,8 +49,9 @@ var AppView = module.exports = Backbone.View.extend({
   tagName: "section",
   id: "wrapper",
 
-  initialize: function(todos) {
-    this.mainView = new MainView(todos);
+  initialize: function(options) {
+    var options = options || {};
+    this.mainView = new MainView({todosCollection: options.todosCollection});
     this.footerView = new FooterView;
   },
 
@@ -159,9 +160,10 @@ var MainView = module.exports = Backbone.View.extend({
   tagName: "section",
   id: "todoapp",
 
-  initialize: function(todos) {
+  initialize: function(options) {
+    var options = options || {};
     this.headerView = new HeaderView;
-    this.todosView  = new TodoCollectionView(todos);
+    this.todosView  = new TodoCollectionView({collection: options.todosCollection});
   },
 
   render: function() {
@@ -190,10 +192,9 @@ var TodoCollectionView = module.exports = Backbone.View.extend({
   tagName: "ul",
   id: "todo-list",
 
-  initialize: function(todos) {
-    this.todos = todos;
-    this.listenTo(this.todos, 'sync', this.addAll);
-    this.todos.fetch();
+  initialize: function() {
+    this.listenTo(this.collection, 'sync', this.addAll);
+    this.collection.fetch();
   },
 
   addOne: function(todo) {
@@ -203,7 +204,7 @@ var TodoCollectionView = module.exports = Backbone.View.extend({
 
   addAll: function() {
     this.$el.empty();
-    this.todos.each(this.addOne, this);
+    this.collection.each(this.addOne, this);
   },
 
 });
