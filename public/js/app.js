@@ -22,7 +22,7 @@ var TodosCollection = module.exports = Backbone.Collection.extend({
 
 });
 
-},{"backbone":"ZNpOQC","backbone.localstorage":6}],3:[function(require,module,exports){
+},{"backbone":"ZNpOQC","backbone.localstorage":7}],3:[function(require,module,exports){
 var Backbone = require("backbone");
 
 var Todo = module.exports = Backbone.Model.extend({
@@ -58,21 +58,54 @@ var AppView = module.exports = Backbone.View.extend({
 
 });
 
-},{"./layout/main":5,"backbone":"ZNpOQC"}],5:[function(require,module,exports){
+},{"./layout/main":6,"backbone":"ZNpOQC"}],5:[function(require,module,exports){
 var Backbone = require("backbone");
 
-var MainView = module.exports = Backbone.View.extend({
+var HeaderView = module.exports = Backbone.View.extend({
 
-  tagName: "section",
-  id: "todoapp",
+  tagName: "header",
+  id: "header",
 
   render: function() {
+
+    var h1 = document.createElement("h1");
+    h1.appendChild(document.createTextNode("Skellington"));
+
+    var input = document.createElement("input");
+    input.id          = "new-todo";
+    input.placeholder = "What needs to be done?";
+    input.autofocus   = true;
+
+    this.$el.append(h1);
+    this.$el.append(input);
+
     return this;
   },
 
 });
 
 },{"backbone":"ZNpOQC"}],6:[function(require,module,exports){
+var Backbone = require("backbone");
+
+var HeaderView = require("./header");
+
+var MainView = module.exports = Backbone.View.extend({
+
+  tagName: "section",
+  id: "todoapp",
+
+  initialize: function() {
+    this.headerView = new HeaderView;
+  },
+
+  render: function() {
+    this.$el.append(this.headerView.render().el);
+    return this;
+  },
+
+});
+
+},{"./header":5,"backbone":"ZNpOQC"}],7:[function(require,module,exports){
 /**
  * Backbone localStorage Adapter
  * Version 1.1.7
@@ -296,7 +329,7 @@ Backbone.sync = function(method, model, options) {
 return Backbone.LocalStorage;
 }));
 
-},{"backbone":"ZNpOQC","underscore":7}],7:[function(require,module,exports){
+},{"backbone":"ZNpOQC","underscore":8}],8:[function(require,module,exports){
 //     Underscore.js 1.4.4
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud Inc.
@@ -3114,9 +3147,9 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
 }).call(global, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
-},{"jquery":"Nn3oJm","underscore":10}],"backbone":[function(require,module,exports){
+},{"jquery":"Nn3oJm","underscore":11}],"backbone":[function(require,module,exports){
 module.exports=require('ZNpOQC');
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 //     Underscore.js 1.5.2
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
