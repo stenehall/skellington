@@ -3,14 +3,10 @@ var Todo            = require("./models/todo"),
     TodosCollection = require("./collections/todos"),
     AppView         = require("./views/app");
 
-// create/append view
 (function() {
   var todos = new TodosCollection([], {model: Todo});
   var view  = new AppView({todosCollection: todos});
   document.body.appendChild(view.render().el);
-
-  // this is only temporarily attached to window for debug purposes
-  window.todos = todos;
 })();
 
 },{"./collections/todos":2,"./models/todo":3,"./views/app":4}],2:[function(require,module,exports){
@@ -148,7 +144,18 @@ var HeaderView = module.exports = Backbone.View.extend({
     input.id          = "new-todo";
     input.placeholder = "What needs to be done?";
     input.autofocus   = true;
+
+    input.addEventListener("keypress", this.createTodo.bind(this, input));
     return input;
+  },
+
+  createTodo: function(input, event) {
+    var value = input.value.trim();
+
+    if (event.which === 13 && value) {
+      this.collection.create({title: value});
+      input.value = "";
+    }
   },
 
 });
@@ -166,7 +173,7 @@ var MainView = module.exports = Backbone.View.extend({
 
   initialize: function(options) {
     var options = options || {};
-    this.headerView = new HeaderView;
+    this.headerView = new HeaderView({collection: options.todosCollection})
     this.todosView  = new TodoCollectionView({collection: options.todosCollection});
   },
 
