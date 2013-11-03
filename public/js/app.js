@@ -1,11 +1,18 @@
 require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var Todo            = require("./models/todo"),
-    TodosCollection = require("./collections/todos");
+    TodosCollection = require("./collections/todos"),
+    AppView         = require("./views/app");
 
 // this is only temporarily attached to window for debug purposes
 window.todosCollection = new TodosCollection([], {model: Todo});
 
-},{"./collections/todos":2,"./models/todo":3}],2:[function(require,module,exports){
+// create/append view
+(function() {
+  var view = new AppView();
+  document.body.appendChild(view.render().el);
+})();
+
+},{"./collections/todos":2,"./models/todo":3,"./views/app":4}],2:[function(require,module,exports){
 var Backbone      = require("backbone"),
     LocalStorage  = require("backbone.localstorage");
 
@@ -15,7 +22,7 @@ var TodosCollection = module.exports = Backbone.Collection.extend({
 
 });
 
-},{"backbone":"ZNpOQC","backbone.localstorage":4}],3:[function(require,module,exports){
+},{"backbone":"ZNpOQC","backbone.localstorage":5}],3:[function(require,module,exports){
 var Backbone = require("backbone");
 
 var Todo = module.exports = Backbone.Model.extend({
@@ -31,6 +38,20 @@ var Todo = module.exports = Backbone.Model.extend({
 });
 
 },{"backbone":"ZNpOQC"}],4:[function(require,module,exports){
+var Backbone = require("backbone");
+
+var AppView = module.exports = Backbone.View.extend({
+
+  tagName: "section",
+  id: "wrapper",
+
+  render: function() {
+    return this;
+  },
+
+});
+
+},{"backbone":"ZNpOQC"}],5:[function(require,module,exports){
 /**
  * Backbone localStorage Adapter
  * Version 1.1.7
@@ -254,7 +275,7 @@ Backbone.sync = function(method, model, options) {
 return Backbone.LocalStorage;
 }));
 
-},{"backbone":"ZNpOQC","underscore":5}],5:[function(require,module,exports){
+},{"backbone":"ZNpOQC","underscore":6}],6:[function(require,module,exports){
 //     Underscore.js 1.4.4
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud Inc.
@@ -1482,6 +1503,8 @@ return Backbone.LocalStorage;
 
 }).call(this);
 
+},{}],"backbone":[function(require,module,exports){
+module.exports=require('ZNpOQC');
 },{}],"ZNpOQC":[function(require,module,exports){
 var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};(function browserifyShim(module, exports, define, browserify_shim__define__module__export__) {
 
@@ -3072,9 +3095,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
 }).call(global, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
-},{"jquery":"Nn3oJm","underscore":8}],"backbone":[function(require,module,exports){
-module.exports=require('ZNpOQC');
-},{}],8:[function(require,module,exports){
+},{"jquery":"Nn3oJm","underscore":9}],9:[function(require,module,exports){
 //     Underscore.js 1.5.2
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -4352,6 +4373,8 @@ module.exports=require('ZNpOQC');
 
 }).call(this);
 
+},{}],"jquery":[function(require,module,exports){
+module.exports=require('Nn3oJm');
 },{}],"Nn3oJm":[function(require,module,exports){
 var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};(function browserifyShim(module, exports, define, browserify_shim__define__module__export__) {
 /*!
@@ -13188,7 +13211,5 @@ if ( typeof window === "object" && typeof window.document === "object" ) {
 
 }).call(global, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
-},{}],"jquery":[function(require,module,exports){
-module.exports=require('Nn3oJm');
 },{}]},{},[1])
 ;

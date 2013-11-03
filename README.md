@@ -31,6 +31,10 @@ variable.
 * `app.TodoList = Backbone.Collection.extend({model: app.Todo})` - A global
 relying on another global.
 
+* **Static HTML** - instead of having a bunch of lifeless HTML in our
+`index.html` that we attach to, we will instead work with a nice hierarchy of
+Backbone Views that renders everything dynamically; *everything*.
+
 
 Critical... Stuff
 -----------------
