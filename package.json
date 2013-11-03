@@ -1,0 +1,33 @@
+{
+  "name": "skellington",
+  "version": "0.0.0",
+  "description": "My take on TodoMVC",
+  "main": null,
+  "scripts": {
+    "start": "npm run-script bundle && node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bundle": "node build/bundle.js"
+  },
+  "author": "smotchkkiss <smotchkkiss@gmail.com>",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "express": "~3.4.4",
+    "swig": "~1.1.0"
+  },
+  "devDependencies": {
+    "backbone": "~1.1.0",
+    "browserify": "~2.35.1",
+    "browserify-shim": "~2.0.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/smotchkiss/skellington.git"
+  },
+  "keywords": [
+    "backbone",
+    "todo"
+  ],
+  "bugs": {
+    "url": "https://github.com/smotchkiss/skellington/issues"
+  }
+}
