@@ -3,13 +3,14 @@ var Todo            = require("./models/todo"),
     TodosCollection = require("./collections/todos"),
     AppView         = require("./views/app");
 
-// this is only temporarily attached to window for debug purposes
-window.todosCollection = new TodosCollection([], {model: Todo});
-
 // create/append view
 (function() {
-  var view = new AppView();
+  var todos = new TodosCollection([], {model: Todo});
+  var view  = new AppView(todos);
   document.body.appendChild(view.render().el);
+
+  // this is only temporarily attached to window for debug purposes
+  window.todos = todos;
 })();
 
 },{"./collections/todos":2,"./models/todo":3,"./views/app":4}],2:[function(require,module,exports){
@@ -22,7 +23,7 @@ var TodosCollection = module.exports = Backbone.Collection.extend({
 
 });
 
-},{"backbone":"ZNpOQC","backbone.localstorage":9}],3:[function(require,module,exports){
+},{"backbone":"ZNpOQC","backbone.localstorage":10}],3:[function(require,module,exports){
 var Backbone = require("backbone");
 
 var Todo = module.exports = Backbone.Model.extend({
@@ -48,8 +49,8 @@ var AppView = module.exports = Backbone.View.extend({
   tagName: "section",
   id: "wrapper",
 
-  initialize: function() {
-    this.mainView = new MainView;
+  initialize: function(todos) {
+    this.mainView = new MainView(todos);
     this.footerView = new FooterView;
   },
 
@@ -158,9 +159,9 @@ var MainView = module.exports = Backbone.View.extend({
   tagName: "section",
   id: "todoapp",
 
-  initialize: function() {
+  initialize: function(todos) {
     this.headerView = new HeaderView;
-    this.todosView  = new TodoCollectionView;
+    this.todosView  = new TodoCollectionView(todos);
   },
 
   render: function() {
@@ -182,14 +183,84 @@ var MainView = module.exports = Backbone.View.extend({
 },{"../todo/todo-collection-view":8,"./header":6,"backbone":"ZNpOQC"}],8:[function(require,module,exports){
 var Backbone = require("backbone");
 
+var TodoView = require("./todo-view");
+
 var TodoCollectionView = module.exports = Backbone.View.extend({
 
   tagName: "ul",
   id: "todo-list",
 
+  initialize: function(todos) {
+    this.todos = todos;
+    this.listenTo(this.todos, 'sync', this.addAll);
+    this.todos.fetch();
+  },
+
+  addOne: function(todo) {
+    var view = new TodoView({model: todo});
+    this.$el.append(view.render().el);
+  },
+
+  addAll: function() {
+    this.$el.empty();
+    this.todos.each(this.addOne, this);
+  },
+
 });
 
-},{"backbone":"ZNpOQC"}],9:[function(require,module,exports){
+},{"./todo-view":9,"backbone":"ZNpOQC"}],9:[function(require,module,exports){
+var Backbone = require("backbone");
+
+var TodoView = module.exports = Backbone.View.extend({
+
+  tagName: "li",
+
+  render: function() {
+    this.$el.append(this.wrapper());
+    this.$el.append(this.editInput());
+    return this;
+  },
+
+  wrapper: function() {
+    var div = document.createElement("div");
+    div.className = "view";
+
+    div.appendChild(this.checkboxInput());
+    div.appendChild(this.titleLabel());
+    div.appendChild(this.deleteButton());
+
+    return div;
+  },
+
+  checkboxInput: function() {
+    var input = document.createElement("input");
+    input.className = "toggle";
+    input.type      = "checkbox";
+    input.checked   = this.model.get("completed");
+    return input;
+  },
+
+  titleLabel: function() {
+    var label = document.createElement("label");
+    label.appendChild(document.createTextNode(this.model.get("title")));
+    return label;
+  },
+
+  deleteButton: function() {
+    var button = document.createElement("button");
+    button.className = "destroy";
+    return button;
+  },
+
+  editInput: function() {
+    var input = document.createElement("input");
+    input.className = "edit";
+    input.value     = this.model.get("title");
+  },
+
+});
+
+},{"backbone":"ZNpOQC"}],10:[function(require,module,exports){
 /**
  * Backbone localStorage Adapter
  * Version 1.1.7
@@ -413,7 +484,7 @@ Backbone.sync = function(method, model, options) {
 return Backbone.LocalStorage;
 }));
 
-},{"backbone":"ZNpOQC","underscore":10}],10:[function(require,module,exports){
+},{"backbone":"ZNpOQC","underscore":11}],11:[function(require,module,exports){
 //     Underscore.js 1.4.4
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud Inc.
@@ -3233,7 +3304,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
 }).call(global, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
-},{"jquery":"Nn3oJm","underscore":13}],13:[function(require,module,exports){
+},{"jquery":"Nn3oJm","underscore":14}],14:[function(require,module,exports){
 //     Underscore.js 1.5.2
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
