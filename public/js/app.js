@@ -173,7 +173,7 @@ var MainView = module.exports = Backbone.View.extend({
 
   initialize: function(options) {
     var options = options || {};
-    this.headerView = new HeaderView({collection: options.todosCollection})
+    this.headerView = new HeaderView({collection: options.todosCollection});
     this.todosView  = new TodoCollectionView({collection: options.todosCollection});
   },
 
@@ -187,7 +187,6 @@ var MainView = module.exports = Backbone.View.extend({
     var section = document.createElement("section");
     section.id = "main";
     section.appendChild(this.todosView.render().el);
-
     return section;
   },
 
