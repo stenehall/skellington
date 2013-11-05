@@ -188,6 +188,7 @@ var MainView = module.exports = Backbone.View.extend({
     this.headerView = new HeaderView({collection: this.collection});
     this.todosView  = new TodoCollectionView({collection: this.collection});
     this.statusView = new StatusView({collection: this.collection});
+    this.listenTo(this.collection, "sync", this.updateToggleAll);
   },
 
   render: function() {
@@ -218,6 +219,11 @@ var MainView = module.exports = Backbone.View.extend({
     label.htmlFor = "toggle-all";
     label.appendChild(document.createTextNode("Mark all as complete"));
     return this.label = label;
+  },
+
+  updateToggleAll: function(event) {
+    var count = this.collection.incomplete().length;
+    this.checkbox.checked = (count === 0);
   },
 
 });
