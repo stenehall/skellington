@@ -286,6 +286,7 @@ var TodoView = module.exports = Backbone.View.extend({
     input.className = "edit";
     input.value     = this.model.get("title");
     input.addEventListener("keypress", this.updateOnEnter.bind(this));
+    input.addEventListener("blur",     this.update.bind(this));
     return this.input = input;
   },
 
