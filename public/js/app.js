@@ -306,6 +306,9 @@ var TodoView = module.exports = Backbone.View.extend({
     if (value) {
       this.model.save({title: value});
     }
+    else {
+      this.delete(event);
+    }
 
     this.$el.removeClass("editing");
   },
