@@ -32,6 +32,10 @@ var Todo = module.exports = Backbone.Model.extend({
     };
   },
 
+  toggle: function() {
+    this.save({completed: !this.get("completed")});
+  },
+
 });
 
 },{"backbone":"ZNpOQC"}],4:[function(require,module,exports){
@@ -227,12 +231,18 @@ var TodoView = module.exports = Backbone.View.extend({
   tagName: "li",
 
   initialize: function() {
+    this.listenTo(this.model, "change",  this.render);
     this.listenTo(this.model, "destroy", this.remove);
   },
 
   render: function() {
     this.$el.append(this.wrapper());
     this.$el.append(this.editInput());
+
+    var completed = this.model.get("completed");
+    this.$el.toggleClass("completed", completed);
+    this.$el.toggleClass("active",    !completed);
+
     return this;
   },
 
@@ -252,6 +262,7 @@ var TodoView = module.exports = Backbone.View.extend({
     input.className = "toggle";
     input.type      = "checkbox";
     input.checked   = this.model.get("completed");
+    input.addEventListener("click", this.model.toggle.bind(this.model));
     return input;
   },
 
