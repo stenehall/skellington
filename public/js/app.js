@@ -246,6 +246,7 @@ var TodoView = module.exports = Backbone.View.extend({
     return this;
   },
 
+  // DOM elements---------------------------------------------------------------
   wrapper: function() {
     var div = document.createElement("div");
     div.className = "view";
@@ -263,28 +264,36 @@ var TodoView = module.exports = Backbone.View.extend({
     input.type      = "checkbox";
     input.checked   = this.model.get("completed");
     input.addEventListener("click", this.model.toggle.bind(this.model));
-    return input;
+    return this.checkbox = input;
   },
 
   titleLabel: function() {
     var label = document.createElement("label");
     label.appendChild(document.createTextNode(this.model.get("title")));
-    return label;
+    label.addEventListener("dblclick", this.edit.bind(this));
+    return this.label = label;
   },
 
   deleteButton: function() {
     var button = document.createElement("button");
     button.className = "destroy";
     button.addEventListener("click", this.delete.bind(this));
-    return button;
+    return this.button = button;
   },
 
   editInput: function() {
     var input = document.createElement("input");
     input.className = "edit";
     input.value     = this.model.get("title");
+    return this.input = input;
   },
 
+  edit: function(event) {
+    this.$el.addClass("editing");
+    this.input.focus();
+  },
+
+  // event delegates -----------------------------------------------------------
   delete: function(event) {
     this.model.destroy();
   },
