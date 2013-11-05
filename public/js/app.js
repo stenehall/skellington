@@ -21,9 +21,13 @@ var TodosCollection = module.exports = Backbone.Collection.extend({
     return this.where({completed: false});
   },
 
+  completed: function() {
+    return this.where({completed: true});
+  },
+
 });
 
-},{"backbone":"ZNpOQC","backbone.localstorage":12}],3:[function(require,module,exports){
+},{"backbone":"ZNpOQC","backbone.localstorage":13}],3:[function(require,module,exports){
 var Backbone = require("backbone");
 
 var Todo = module.exports = Backbone.Model.extend({
@@ -203,10 +207,11 @@ var MainView = module.exports = Backbone.View.extend({
 
 });
 
-},{"../todo/todo-collection-view":10,"./header":6,"./status":8,"backbone":"ZNpOQC"}],8:[function(require,module,exports){
+},{"../todo/todo-collection-view":11,"./header":6,"./status":8,"backbone":"ZNpOQC"}],8:[function(require,module,exports){
 var Backbone = require("backbone");
 
 var IncompleteCounterView = require("../status/incomplete-counter");
+var ClearCompletedView    = require("../status/clear-completed");
 
 var StatusView = module.exports = Backbone.View.extend({
 
@@ -214,17 +219,41 @@ var StatusView = module.exports = Backbone.View.extend({
   id: "footer",
 
   initialize: function() {
-    this.incompleteCounterView = new IncompleteCounterView({collection: this.collection});
+    this.incompleteCounterView  = new IncompleteCounterView({collection: this.collection});
+    this.clearCompletedView     = new ClearCompletedView({collection: this.collection});
   },
 
   render: function() {
     this.$el.append(this.incompleteCounterView.render().el);
+    this.$el.append(this.clearCompletedView.render().el);
     return this;
   },
 
 });
 
-},{"../status/incomplete-counter":9,"backbone":"ZNpOQC"}],9:[function(require,module,exports){
+},{"../status/clear-completed":9,"../status/incomplete-counter":10,"backbone":"ZNpOQC"}],9:[function(require,module,exports){
+var Backbone = require("backbone");
+
+var ClearCompletedView = module.exports = Backbone.View.extend({
+
+  tagName: "button",
+  id: "clear-completed",
+
+  initialize: function() {
+    this.listenTo(this.collection, "add",     this.render);
+    this.listenTo(this.collection, "remove",  this.render);
+    this.listenTo(this.collection, "change",  this.render);
+  },
+
+  render: function() {
+    var count = this.collection.completed().length;
+    this.$el.text("Clear completed " + count);
+    return this;
+  },
+
+});
+
+},{"backbone":"ZNpOQC"}],10:[function(require,module,exports){
 var Backbone = require("backbone");
 
 var IncompleteCounterView = module.exports = Backbone.View.extend({
@@ -262,7 +291,7 @@ var IncompleteCounterView = module.exports = Backbone.View.extend({
 
 });
 
-},{"backbone":"ZNpOQC"}],10:[function(require,module,exports){
+},{"backbone":"ZNpOQC"}],11:[function(require,module,exports){
 var Backbone = require("backbone");
 
 var TodoView = require("./todo-view");
@@ -289,7 +318,7 @@ var TodoCollectionView = module.exports = Backbone.View.extend({
 
 });
 
-},{"./todo-view":11,"backbone":"ZNpOQC"}],11:[function(require,module,exports){
+},{"./todo-view":12,"backbone":"ZNpOQC"}],12:[function(require,module,exports){
 var Backbone = require("backbone");
 
 var TodoView = module.exports = Backbone.View.extend({
@@ -387,7 +416,7 @@ var TodoView = module.exports = Backbone.View.extend({
 
 });
 
-},{"backbone":"ZNpOQC"}],12:[function(require,module,exports){
+},{"backbone":"ZNpOQC"}],13:[function(require,module,exports){
 /**
  * Backbone localStorage Adapter
  * Version 1.1.7
@@ -611,7 +640,7 @@ Backbone.sync = function(method, model, options) {
 return Backbone.LocalStorage;
 }));
 
-},{"backbone":"ZNpOQC","underscore":13}],13:[function(require,module,exports){
+},{"backbone":"ZNpOQC","underscore":14}],14:[function(require,module,exports){
 //     Underscore.js 1.4.4
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud Inc.
@@ -3431,7 +3460,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
 }).call(global, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
-},{"jquery":"Nn3oJm","underscore":16}],16:[function(require,module,exports){
+},{"jquery":"Nn3oJm","underscore":17}],17:[function(require,module,exports){
 //     Underscore.js 1.5.2
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
