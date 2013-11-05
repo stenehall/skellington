@@ -198,6 +198,7 @@ var MainView = module.exports = Backbone.View.extend({
     return this;
   },
 
+  // DOM elements --------------------------------------------------------------
   listWrapper: function() {
     var section = document.createElement("section");
     section.id  = "main";
@@ -211,6 +212,7 @@ var MainView = module.exports = Backbone.View.extend({
     var input   = document.createElement("input");
     input.id    = "toggle-all";
     input.type  = "checkbox";
+    input.addEventListener("click", this.toggleAll.bind(this));
     return this.checkbox = input;
   },
 
@@ -219,6 +221,14 @@ var MainView = module.exports = Backbone.View.extend({
     label.htmlFor = "toggle-all";
     label.appendChild(document.createTextNode("Mark all as complete"));
     return this.label = label;
+  },
+
+  // event delegates -----------------------------------------------------------
+  toggleAll: function(event) {
+    var status = this.checkbox.checked;
+    this.collection.each(function(todo) {
+      todo.save({completed: status});
+    });
   },
 
   updateToggleAll: function(event) {
