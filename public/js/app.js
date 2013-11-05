@@ -59,7 +59,7 @@ var AppView = module.exports = Backbone.View.extend({
 
   initialize: function(options) {
     var options = options || {};
-    this.mainView = new MainView({todosCollection: options.todosCollection});
+    this.mainView = new MainView({collection: options.todosCollection});
     this.footerView = new FooterView;
   },
 
@@ -184,11 +184,10 @@ var MainView = module.exports = Backbone.View.extend({
   tagName: "section",
   id: "todoapp",
 
-  initialize: function(options) {
-    var options = options || {};
-    this.headerView = new HeaderView({collection: options.todosCollection});
-    this.todosView  = new TodoCollectionView({collection: options.todosCollection});
-    this.statusView = new StatusView({collection: options.todosCollection});
+  initialize: function() {
+    this.headerView = new HeaderView({collection: this.collection});
+    this.todosView  = new TodoCollectionView({collection: this.collection});
+    this.statusView = new StatusView({collection: this.collection});
   },
 
   render: function() {
@@ -200,9 +199,25 @@ var MainView = module.exports = Backbone.View.extend({
 
   listWrapper: function() {
     var section = document.createElement("section");
-    section.id = "main";
+    section.id  = "main";
+    section.appendChild(this.toggleAllCheckbox());
+    section.appendChild(this.toggleAllLabel());
     section.appendChild(this.todosView.render().el);
-    return section;
+    return this.section = section;
+  },
+
+  toggleAllCheckbox: function() {
+    var input   = document.createElement("input");
+    input.id    = "toggle-all";
+    input.type  = "checkbox";
+    return this.checkbox = input;
+  },
+
+  toggleAllLabel: function() {
+    var label = document.createElement("label");
+    label.htmlFor = "toggle-all";
+    label.appendChild(document.createTextNode("Mark all as complete"));
+    return this.label = label;
   },
 
 });
